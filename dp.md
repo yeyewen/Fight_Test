@@ -149,3 +149,92 @@ class Solution:
             max_sum=max(now_sum,max_sum)
         return max_sum
 ```
+### 5.1 题目
+
+给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字）。
+
+ 
+
+示例 1:
+
+输入: [2,3,-2,4]
+输出: 6
+解释: 子数组 [2,3] 有最大乘积 6。
+
+
+### 5.2 解法
+
+
+> 解法1：暴力法 python实现，最后一个数据会超时，我再也不试暴力法了
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        n=len(nums)
+        dp=nums[0]
+        for i in range(n):
+            multi=1
+            for j in range(i,n):
+                multi*=nums[j]
+                dp=max(dp,multi)
+        return dp
+```
+
+
+
+> 解法2 动态规划解法，需利用python多重赋值
+
+我们先定义一个数组 dpMax，用 dpMax[i] 表示以第 i 个元素的结尾的子数组，乘积最大的值，也就是这个数组必须包含第 i 个元素。
+那么 dpMax[i] 的话有几种取值。
+
+当 nums[i] >= 0 并且dpMax[i-1] > 0，dpMax[i] = dpMax[i-1] * nums[i]
+当 nums[i] >= 0 并且dpMax[i-1] < 0，此时如果和前边的数累乘的话，会变成负数，所以dpMax[i] = nums[i]
+当 nums[i] < 0，此时如果前边累乘结果是一个很大的负数，和当前负数累乘的话就会变成一个更大的数。所以我们还需要一个数组 dpMin 来记录以第 i 个元素的结尾的子数组，乘积最小的值。
+
+当dpMin[i-1] < 0，dpMax[i] = dpMin[i-1] * nums[i]
+当dpMin[i-1] >= 0，dpMax[i] =  nums[i]
+
+
+
+当然，上边引入了 dpMin 数组，怎么求 dpMin 其实和上边求 dpMax 的过程其实是一样的。
+参考题解 https://leetcode-cn.com/problems/maximum-product-subarray/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--36/
+
+这里保存状态可以是一个两维，两个一维，利用python的多重赋值压缩为两个常数空间
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        n=len(nums)
+        dp_min=nums[0]
+        dp_max=dp_min
+        ans=dp_min
+        for i in range(1,n):
+            if nums[i]>0:
+                dp_max,dp_min=max(dp_max*nums[i],nums[i],dp_min*nums[i]),min(dp_min*nums[i],nums[i],dp_max*nums[i])
+                #dp_min=min(dp_min*nums[i],nums[i],dp_max*nums[i])
+            else :
+                dp_max,dp_min=max(dp_min*nums[i],nums[i]),min(dp_max*nums[i],nums[i])
+                #dp_min=min(dp_max*nums[i],nums[i])
+            ans=max(dp_min,ans,dp_max)
+        return ans
+```
+>解法二https://leetcode-cn.com/problems/maximum-product-subarray/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--36/
+这个题解写的很巧妙
+
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        n=len(nums)
+        dp1=1
+        ans=nums[0]
+        dp2=1
+        for i in range(0,n):
+            dp1 *=nums[i]
+            ans=max(dp1,ans)
+            if nums[i]==0:
+                dp1=1
+        for i in range(n-1,0,-1):
+            dp2 *=nums[i]
+            ans=max(dp2,ans)
+            if nums[i]==0:
+                dp2=1
+        return ans
+```
