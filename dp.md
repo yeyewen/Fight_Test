@@ -238,3 +238,65 @@ class Solution:
                 dp2=1
         return ans
 ```
+## 6.  887. 鸡蛋掉落 https://leetcode-cn.com/problems/super-egg-drop/
+
+### 6.1 题目
+
+你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑。
+
+每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。
+
+你知道存在楼层 F ，满足 0 <= F <= N 任何从高于 F 的楼层落下的鸡蛋都会碎，从 F 楼层或比它低的楼层落下的鸡蛋都不会破。
+
+每次移动，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 X 扔下（满足 1 <= X <= N）。
+
+你的目标是确切地知道 F 的值是多少。
+
+无论 F 的初始值如何，你确定 F 的值的最小移动次数是多少？
+
+
+### 6.2 解法
+
+
+> 我们可以考虑使用动态规划来做这道题，状态可以表示成 (K,N)(K, N)(K,N)，其中 KKK 为鸡蛋数，NNN 为楼层数。当我们从第 XXX 楼扔鸡蛋的时候：
+
+
+如果鸡蛋不碎，那么状态变成 (K,N−X)(K, N-X)(K,N−X)，即我们鸡蛋的数目不变，但答案只可能在上方的 N−X层楼了。也就是说，我们把原问题缩小成了一个规模为 (K,N−X)(K, N-X)(K,N−X) 的子问题；
+
+
+如果鸡蛋碎了，那么状态变成 (K−1,X−1)(K-1, X-1)(K−1,X−1)，即我们少了一个鸡蛋，但我们知道答案只可能在第 XXX 楼下方的 X−1X-1X−1 层楼中了。也就是说，我们把原问题缩小成了一个规模为 (K−1,X−1)(K-1, X-1)(K−1,X−1) 的子问题。
+
+
+这样一来，我们定义 dp(K,N)dp(K, N)dp(K,N) 为在状态 (K,N)(K, N)(K,N) 下最少需要的步数。根据以上分析我们可以列出状态转移方程：
+dp(K,N)=1+min⁡1≤X≤N(max⁡(dp(K−1,X−1),dp(K,N−X)))dp(K, N) = 1 + \min\limits_{1 \leq X \leq N} \Big( \max(dp(K-1, X-1), dp(K, N-X)) \Big)
+dp(K,N)=1+1≤X≤Nmin​(max(dp(K−1,X−1),dp(K,N−X)))
+这个状态转移方程是如何得来的呢？对于 dp(K,N)dp(K, N)dp(K,N) 而言，我们像上面分析的那样，枚举第一个鸡蛋扔在的楼层数 XXX。由于我们并不知道真正的 FFF 值，因此我们必须保证 鸡蛋碎了之后接下来需要的步数 和 鸡蛋没碎之后接下来需要的步数 二者的 最大值 最小，这样就保证了在 最坏情况下（也就是无论 FFF 的值如何） dp(K,N)dp(K, N)dp(K,N) 的值最小。如果能理解这一点，也就能理解上面的状态转移方程，即最小化 max⁡(dp(K−1,X−1),dp(K,N−X))\max(dp(K-1, X-1), dp(K, N-X))max(dp(K−1,X−1),dp(K,N−X))。
+
+
+```python
+class Solution:
+    def superEggDrop(self, K: int, N: int) -> int:
+        memo = {}
+        def dp(k, n):
+            if (k, n) not in memo:
+                if n == 0:
+                    ans = 0
+                elif k == 1:
+                    ans = n
+                else:
+                    lo, hi = 1, n
+                    while lo + 1 < hi:
+                        x = (lo + hi) // 2
+                        t1 = dp(k-1, x-1)
+                        t2 = dp(k, n-x)
+                        if t1 < t2:
+                            lo = x
+                        elif t1 > t2:
+                            hi = x
+                        else:
+                            lo = hi = x
+                    ans = 1 + min(max(dp(k-1, x-1), dp(k, n-x)) for x in (lo, hi))
+                memo[k, n] = ans
+            return memo[k, n]
+        return dp(K, N)
+```
