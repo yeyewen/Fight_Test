@@ -427,8 +427,7 @@ class Solution:
 ```
 
 ## 10. 337. 打家劫舍 III 
-
-难度中等325收藏分享切换为英文关注反馈在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为“根”。 除了“根”之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。 如果两个直接相连的房子在同一天晚上被打劫，房屋将自动报警。
+在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为“根”。 除了“根”之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。 如果两个直接相连的房子在同一天晚上被打劫，房屋将自动报警。
 
 计算在不触动警报的情况下，小偷一晚能够盗取的最高金额。
 
@@ -463,4 +462,30 @@ class Solution:
         steal,not_steal = dp(root)
         return max(steal,not_steal)
 ```
+## 11.121. 买卖股票的最佳时机 
 
+### 11.1解法
+>记录每次在当前状态下的每一个最低股票价格，再记录当前最低价格下的最优收益。
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def rob(self, root: TreeNode) -> int:
+        #思路：递归
+        def dp(node):
+            #返回值是偷取该节点和不偷取该节点的最大收益
+            if node == None:
+                return (0,0)
+            steal_left,not_steal_left = dp(node.left)
+            steal_right,not_steal_right = dp(node.right)
+            steal = not_steal_left + not_steal_right + node.val
+            not_steal = max(steal_left,not_steal_left) + max(steal_right,not_steal_right)
+            return (steal,not_steal)
+        steal,not_steal = dp(root)
+        return max(steal,not_steal)
+```
