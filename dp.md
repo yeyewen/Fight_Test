@@ -467,25 +467,14 @@ class Solution:
 ### 11.1解法
 >记录每次在当前状态下的每一个最低股票价格，再记录当前最低价格下的最优收益。
 ```python
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
 class Solution:
-    def rob(self, root: TreeNode) -> int:
-        #思路：递归
-        def dp(node):
-            #返回值是偷取该节点和不偷取该节点的最大收益
-            if node == None:
-                return (0,0)
-            steal_left,not_steal_left = dp(node.left)
-            steal_right,not_steal_right = dp(node.right)
-            steal = not_steal_left + not_steal_right + node.val
-            not_steal = max(steal_left,not_steal_left) + max(steal_right,not_steal_right)
-            return (steal,not_steal)
-        steal,not_steal = dp(root)
-        return max(steal,not_steal)
+    def maxProfit(self, prices: List[int]) -> int:
+        if len(prices)==0:
+            return 0
+        min_=prices[0]
+        max_=0
+        for i in range(1,len(prices)):
+            max_=max(max_,prices[i]-min_)
+            min_=min(min_,prices[i])
+        return max_
 ```
