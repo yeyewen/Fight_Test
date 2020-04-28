@@ -86,7 +86,7 @@ class Solution:
         return dp[n-1][0]
 
 ```
-利用python多重复制进行状态压缩
+利用python多重赋值进行状态压缩
 ```python
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -101,5 +101,36 @@ class Solution:
         return dp0
 
 ```
+##16.714. 买卖股票的最佳时机含手续费
+仔细分析问题，在进行收益计算时减去手续费即可
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        n=len(prices)
+        if n==0:
+            return 0
+        dp=[[0 for i in range(2)] for i in range(n)]
+        dp[0][1]=-prices[0]
+        for i in range(1,n):
+            dp[i][0]=max(dp[i-1][0],dp[i-1][1]+prices[i]-fee)
+            dp[i][1]=max(dp[i-1][1],dp[i-1][0]-prices[i])
+        return dp[n-1][0]
 
+
+```
+状态压缩
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        n=len(prices)
+        if n==0:
+            return 0
+        dp0=0
+        dp1=-prices[0]
+        for i in range(1,n):
+            dp0,dp1=max(dp0,dp1+prices[i]-fee),max(dp1,dp0-prices[i])
+        return dp0
+
+
+```
 
