@@ -133,4 +133,64 @@ class Solution:
 
 
 ```
+## 17. 72.编辑距离
 
+给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
+
+你可以对一个单词进行如下三种操作：
+
+
+	插入一个字符
+	删除一个字符
+	替换一个字符
+
+有两个单词，三种操作，就有六种操作方法。
+但我们可以发现，如果我们有单词 A 和单词 B：对单词 A 删除一个字符和对单词 B 插入一个字符是等价的。
+例如当单词 A 为 doge，单词 B 为 dog 时，我们既可以删除单词 A 的最后一个字符 e，得到相同的 dog，也可以在单词B末尾添加一个字符e，得到相同的doge；
+同理，对单词 B 删除一个字符和对单词 A 插入一个字符也是等价的；
+对单词 A 替换一个字符和对单词 B 替换一个字符是等价的。例如当单词 A 为 bat，单词B为cat时，我们修改单词A的第一个字母b->c，和修改单词B的第一个字母c->b是等价的
+
+这样本质不同的操作实际上只有三种：
+在单词A中插入一个字符
+在单词B种插入一个字符
+修改单词A中的一个字符
+若A和B的最后一个字母相同：
+D[i][j]=min(D[i][j−1]+1,D[i−1][j]+1,D[i−1][j−1])
+若A和B的最后一个字母不同：
+D[i][j]=min(D[i][j−1]+1,D[i−1][j]+1,D[i−1][j−1]+1)
+```python
+class Solution:
+    def minDistance(self, word1, word2):
+        """
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        n = len(word1)
+        m = len(word2)
+        
+        # 有一个字符串为空串
+        if n * m == 0:
+            return n + m
+        
+        # DP 数组
+        D = [ [0] * (m + 1) for _ in range(n + 1)]
+        
+        # 边界状态初始化
+        for i in range(n + 1):
+            D[i][0] = i
+        for j in range(m + 1):
+            D[0][j] = j
+        
+        # 计算所有 DP 值
+        for i in range(1, n + 1):
+            for j in range(1, m + 1):
+                left = D[i - 1][j] + 1
+                down = D[i][j - 1] + 1
+                left_down = D[i - 1][j - 1] 
+                if word1[i - 1] != word2[j - 1]:
+                    left_down += 1
+                D[i][j] = min(left, down, left_down)
+        
+        return D[n][m]
+```
