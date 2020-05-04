@@ -193,4 +193,38 @@ class Solution:
                 D[i][j] = min(left, down, left_down)
         
         return D[n][m]
-```
+``` 
+## 44.通配符匹配
+给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 '?' 和 '*'  的通配符匹配。
+该题与编辑距离这道题比较像，用类似的思路建立状态转移方法
+动态规划：dp[i][j]表示：s的前i个字符与p的前j个字符是否匹配
+状态转移方程
+如果s1的第 i 个字符和s2的第 j 个字符相同，或者s2的第 j 个字符为 “?”
+f[i][j] = f[i - 1][j - 1]
+如果s2的第 j 个字符为 *
+若s2的第 j 个字符匹配空串, f[i][j] = f[i][j - 1]
+若s2的第 j 个字符匹配s1的第 i 个字符, f[i][j] = f[i - 1][j]
+```python
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        s = '0'+s
+        p = '0'+p
+        # dp[i][j]表示：s的前i个字符与p的前j个字符是否匹配
+        dp = [[False for _ in range(len(p))] for _ in range(len(s))]
+
+        # 初始化
+        dp[0][0] = True  # 空字符串与空字符串相匹配
+        for i in range(1, len(p)):
+            dp[0][i] = dp[0][i-1] and p[i] == '*'
+        for i in range(1, len(s)):
+            dp[i][0] = False
+        
+        # 动态规划
+        for i in range(1, len(s)):
+            for j in range(1, len(p)):
+                if s[i] == p[j] or p[j] == '?':
+                    dp[i][j] = dp[i-1][j-1]
+                elif p[j] == '*':
+                    dp[i][j] = dp[i-1][j] or dp[i][j-1]
+        return dp[-1][-1]
+``` 
