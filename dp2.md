@@ -265,18 +265,23 @@ class Solution:
 给定一个字符串s，找到其中最长的回文子序列。可以假设s的最大长度为1000。
 明确子序列和子串的区别，子串是不可跳跃，必须连续，子序列可以跳跃
 这个问题里DP数组的定义是：在子串s[i,...,j]中，最长回文子序列的长度为dp[i][j]
-确定状态方程：
-转移方程
+
+确定状态转移方程
 如果 s 的第 i 个字符和第 j 个字符相同的话
+
 f[i][j] = f[i + 1][j - 1] + 2
+
 如果 s 的第 i 个字符和第 j 个字符不同的话
+
 f[i][j] = max(f[i + 1][j], f[i][j - 1])
 
 至此，状态转移方程就写出来了，根据 dp 数组的定义，我们要求的就是 dp[0][n - 1]，也就是整个 s 的最长回文子序列的长度。
 然后注意遍历顺序，i 从最后一个字符开始往前遍历，j 从 i + 1 开始往后遍历，这样可以保证每个子问题都已经算好了。
 初始状态的初始化，以及遍历的起点
 参考题解
+
 https://leetcode-cn.com/problems/longest-palindromic-subsequence/solution/zi-xu-lie-wen-ti-tong-yong-si-lu-zui-chang-hui-wen/
+
 ```python
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
