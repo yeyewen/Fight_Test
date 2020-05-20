@@ -1,6 +1,8 @@
+# Datawhale 组队学习
 
-### Day 01
+##Day 01
 
+### 定义读取数据集，定义读取数据dataloader
 赛题提供了训练集、验证集和测试集中所有字符的位置框
 
 最先想到就是图片分类问题，但是如果不提供位置框呢？
@@ -38,6 +40,73 @@ class SVHNDataset(Dataset):
 pytorch定义数据模块 
 
 torch.utils.data.DataLoader 
+
 是代表这一数据的抽象类，定义自己的数据类继承和重写这个抽象类，只需要定义__len__和__getitem__
+
+定义需要的数据类，可以通过迭代的方法来取得每一个数据，但是很难实现取batch 和shuffle或者多线程
+
+去读取数据，所以Pytorch中提供了torch.utils.data.DataLoader 定义一个新的迭代器
+
+```
+train_loader = torch.utils.data.DataLoader(
+    SVHNDataset(train_path, train_label,
+                transforms.Compose([
+                    transforms.Resize((64, 128)),
+                    transforms.RandomCrop((60, 120)),
+                    transforms.ColorJitter(0.3, 0.3, 0.2),
+                    transforms.RandomRotation(10),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])), 
+    batch_size=40, 
+    shuffle=True, 
+    num_workers=10,
+)
+
+```
+###定义分类模型
+
+在pytorch里面编写神经网络，所有层结构和神经网络都来自于torch.nn,所有的模型构建都是从这个基类nn.Module继承的
+
+于是有一下模板
+```
+class net_name(nn.Module):
+    def __init__(self):
+        super(net_name, self).__init__()
+		self.conv1=nn.Conv2d(in_channels,out_channels,kernel_size)
+	
+	def forward(self,x):
+		s=self.conv1(x)
+		return x
+```
+```
+class SVHN_Model1(nn.Module):
+    def __init__(self):
+        super(SVHN_Model1, self).__init__()
+                
+        model_conv = models.resnet18(pretrained=True)
+        model_conv.avgpool = nn.AdaptiveAvgPool2d(1)
+        model_conv = nn.Sequential(*list(model_conv.children())[:-1])
+        self.cnn = model_conv
+        
+        self.fc1 = nn.Linear(512, 11)
+        self.fc2 = nn.Linear(512, 11)
+        self.fc3 = nn.Linear(512, 11)
+        self.fc4 = nn.Linear(512, 11)
+        self.fc5 = nn.Linear(512, 11)
+    
+    def forward(self, img):        
+        feat = self.cnn(img)
+        # print(feat.shape)
+        feat = feat.view(feat.shape[0], -1)
+        c1 = self.fc1(feat)
+        c2 = self.fc2(feat)
+        c3 = self.fc3(feat)
+        c4 = self.fc4(feat)
+        c5 = self.fc5(feat)
+        return c1, c2, c3, c4, c5
+```
+
+
 
 
