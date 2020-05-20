@@ -64,7 +64,7 @@ train_loader = torch.utils.data.DataLoader(
 )
 
 ```
-###定义分类模型
+### 定义分类模型
 
 在pytorch里面编写神经网络，所有层结构和神经网络都来自于torch.nn,所有的模型构建都是从这个基类nn.Module继承的
 
