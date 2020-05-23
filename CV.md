@@ -106,7 +106,21 @@ class SVHN_Model1(nn.Module):
         c5 = self.fc5(feat)
         return c1, c2, c3, c4, c5
 ```
+## Day 02  5/23
+该baseline思路定义为一个定长字符模型,但是这样容易的导致模型精度低
+模型搭建 模型损失函数定义部分 
+``` 
+model = SVHN_Model1()
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), 0.001)
+```
+
+模型损失函数定义部分
 
 
+提交baseline结果，线上0.31，增大迭代轮数，线上结果0.38
 
+思路尝试修改batchsize和目标增强方式
+
+采用思路二的方法
 
