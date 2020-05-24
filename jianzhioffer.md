@@ -1,4 +1,4 @@
-#剑指offer专题
+# 剑指offer专题
 
 ## 面试题11. 旋转数组的最小数字
 
@@ -19,7 +19,7 @@ class Solution:
       
 ```
 
-##面试题18. 删除链表的节点
+## 面试题18. 删除链表的节点
 
 ```python
 class Solution:
@@ -305,7 +305,7 @@ class Solution:
             n=n-1&n
         return count
 ```
-###面试题22. 链表中倒数第k个节点
+### 面试题22. 链表中倒数第k个节点
 快慢指针法
 ```python
 class Solution:
@@ -341,7 +341,7 @@ class Solution:
 ```
 
 
-###面试题25. 合并两个排序的链表
+### 面试题25. 合并两个排序的链表
 ```python
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
@@ -372,7 +372,7 @@ class Solution:
         ans.next=l1 if l1 else l2
         return cur.next
 ```
-###面试题54. 二叉搜索树的第k大节点
+### 面试题54. 二叉搜索树的第k大节点
 ```python
 class Solution:
     def kthLargest(self, root: TreeNode, k: int) -> int:
@@ -406,7 +406,7 @@ class Solution:
         dfs(root)
         return self.res
 ```
-###用两个栈来实现队列
+### 用两个栈来实现队列
 ```python
 
 class CQueue:
@@ -491,7 +491,7 @@ class Solution:
                 return i
 
 ```
-###面试题39. 数组中出现次数超过一半的数字
+### 面试题39. 数组中出现次数超过一半的数字
 使用哈希表进行统计
 ```python
 class Solution:
@@ -585,7 +585,7 @@ class Solution:
         return node1
        
 ```
-###面试题21 调整数组顺序使奇数位于偶数前面
+### 面试题21 调整数组顺序使奇数位于偶数前面
 双指针法、注意循环的终止条件
 ```python
 class Solution:
@@ -739,7 +739,7 @@ class Solution:
         left = j
         return right - left - 1
 ```
-###面试题61. 扑克牌中的顺子
+### 面试题61. 扑克牌中的顺子
 ```
 class Solution:
     def isStraight(self, nums: List[int]) -> bool:
@@ -755,7 +755,7 @@ class Solution:
             repeat.add(num) # 添加牌至 Set
         return ma - mi < 5 # 最大牌 - 最小牌 < 5 则可构成顺子 
 ```
-###面试题58 - I. 翻转单词顺序
+### 面试题58 - I. 翻转单词顺序
 ```
 class Solution:
     def reverseWords(self, s: str) -> str:
