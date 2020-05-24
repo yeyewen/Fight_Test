@@ -622,7 +622,7 @@ class Solution:
 ```
 还有递归和迭代的方法
 
-###面试题42. 连续子数组的最大和
+### 面试题42. 连续子数组的最大和
 动态规划法为本题时间复杂度和空间复杂度最优
 ```python
 class Solution:
@@ -682,7 +682,7 @@ class Solution:
 
 ```
 使用哈希优化
-```
+```python
 class Solution:
     def twoSum(self, n: int) -> List[float]:
         all_num = 6 ** n
@@ -697,7 +697,8 @@ class Solution:
 ```
 ### 面试题53 - I. 在排序数组中查找数字 I
 
-```class Solution:
+```python
+class Solution:
     def search(self, nums: List[int], target: int) -> int:
         if len(nums)==0:
             return 0
@@ -718,7 +719,7 @@ class Solution:
                 return j-i+1
         return 0
 ```
-```
+```python
 class Solution:
     def search(self, nums: [int], target: int) -> int:
         # 搜索右边界 right
@@ -740,7 +741,7 @@ class Solution:
         return right - left - 1
 ```
 ### 面试题61. 扑克牌中的顺子
-```
+```python
 class Solution:
     def isStraight(self, nums: List[int]) -> bool:
         repeat = set()
@@ -756,7 +757,7 @@ class Solution:
         return ma - mi < 5 # 最大牌 - 最小牌 < 5 则可构成顺子 
 ```
 ### 面试题58 - I. 翻转单词顺序
-```
+```python
 class Solution:
     def reverseWords(self, s: str) -> str:
         s.strip()
@@ -764,7 +765,7 @@ class Solution:
         return ' '.join(s[::-1],)
 ```
 ### 面试题67. 把字符串转换成整数
-```
+```python
 class Solution:
     def strToInt(self, str: str) -> int:
         str = str.strip() # 删除首尾空格
@@ -782,7 +783,7 @@ class Solution:
 ### 面试题16. 数值的整数次方
 硬做超时
 时间复杂度为O（n）
-```
+```python
 class Solution:
     def pow_(self,x,n):
         ans=1
@@ -799,7 +800,7 @@ class Solution:
 ```
 快速幂方法O（logn） 二分法
 时间复杂度为
-```
+```python
 class Solution:
     def myPow(self, x: float, n: int) -> float:
         if x == 0: return 0
@@ -813,13 +814,13 @@ class Solution:
 ```
 ### 面试题20. 表示数值的字符串
 
-```
+```python
 class Solution:
     def isNumber(self, s: str) -> bool:
         try:float(s);return True
         except:return False
 ```
-```
+```python
 class Solution(object):
     def isNumber(self, s):
         """
@@ -882,7 +883,7 @@ class Solution(object):
                 return False
 ```
 ### 面试题41数据流的中位数
-```
+```python
 from heapq import *
 
 class MedianFinder:
