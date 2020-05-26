@@ -124,3 +124,19 @@ optimizer = torch.optim.Adam(model.parameters(), 0.001)
 
 采用思路二的方法
 
+### day 03 5/26
+加深特征提取层
+resnet 101 线上成绩0.49
+
+resnet 152 线上成绩0.56
+
+## Resnet 在解决什么问题？
+何凯明说过可以通过初始化和归一化解决梯度弥散或爆炸的问题
+通道或短路机制在解决什么问题呢？ 原文中说是深层网络的退化问题
+### 为什么深度模型产生退化问题？
+
+#### （1）过拟合 ?overfitting? 不对
+https://www.zhihu.com/question/64494691
+#### （2） 梯度爆炸/消失？ Gradient Exploding/Vanishing？ 不是
+
+
